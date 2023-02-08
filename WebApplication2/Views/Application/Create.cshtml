@@ -1,0 +1,329 @@
+﻿@model WebApplication2.Models.Brand
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.10.0/css/bootstrap-select.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+<div class="content ps-0 " style="height:100vh;flex:1;">
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div id="Search" class="row d-flex justify-content-around " style="box-sizing: border-box; border:5px solid#F5F5F5">
+            @*@Html.ValidationSummary(true, "", new { @class = "text-danger" })*@
+            <div class="col-2 d-flex flex-column">
+                <label>Hãng</label>
+                @{
+                    List<SelectListItem> listItems = new List<SelectListItem>();
+                    listItems.Add(new SelectListItem
+                    {
+                        Text = "Dell",
+                        Value = "Dell"
+                    });
+                    listItems.Add(new SelectListItem
+                    {
+                        Text = "IBM",
+                        Value = "IBM",
+                        
+                    });
+                    listItems.Add(new SelectListItem
+                    {
+                        Text = "Cisco",
+                        Value = "Cisco",
+                        
+                    });
+                }
+                @Html.DropDownListFor(model => model.brandname, listItems, "-- Chọn hãng --", new {@class = "form-control selectpicker" , onchange = "this.form.submit();"})
+                @*@Html.EditorFor(model => model.brandname, new { htmlAttributes = new { @class = "form-control", @id = "brandname" } })*@
+                @*@Html.ValidationMessageFor(model => model.brandname, "", new { @class = "text-danger" })*@
+            </div>
+
+            <div class="col-2 d-flex flex-column">
+                <label>Tên chương trình</label>
+                @Html.EditorFor(model => model.program, new { htmlAttributes = new { @class = "form-control", @id = "program" } })
+                @*@Html.ValidationMessageFor(model => model.program, "", new { @class = "text-danger" })*@
+            </div>
+
+            <div class="col-2 d-flex flex-column">
+                <label>Đơn vị tiền tệ</label>
+                @{
+                    List<SelectListItem> listItem1s = new List<SelectListItem>();
+                    listItem1s.Add(new SelectListItem
+                    {
+                        Text = "USD",
+                        Value = "USD"
+                    });
+                    listItem1s.Add(new SelectListItem
+                    {
+                        Text = "VND",
+                        Value = "VND",
+                        
+                    });
+                    listItem1s.Add(new SelectListItem
+                    {
+                        Text = "EUR",
+                        Value = "EUR",
+                        
+                    });
+                    listItem1s.Add(new SelectListItem
+                    {
+                        Text = "AUD",
+                        Value = "AUD",
+                       
+                    });
+                    listItem1s.Add(new SelectListItem
+                    {
+                        Text = "CNY",
+                        Value = "CNY",
+                        
+                    });
+                    listItem1s.Add(new SelectListItem
+                    {
+                        Text = "HKD",
+                        Value = "HKD",
+                        
+                    });
+                }
+                @Html.DropDownListFor(model => model.currency, listItem1s, "-- Đơn vị tiền tệ --", new { @class = "form-control selectpicker" , onchange = "this.form.submit();" })
+                @*@Html.EditorFor(model => model.currency, new { htmlAttributes = new { @class = "form-control", @id = "currency" } })*@
+                @*@Html.ValidationMessageFor(model => model.currency, "", new { @class = "text-danger" })*@
+            </div>
+
+            <div class="col-2 d-flex flex-column">
+                <label>Ghi chú</label>
+                @Html.EditorFor(model => model.note, new { htmlAttributes = new { @class = "form-control", @id = "note" } })
+                @Html.ValidationMessageFor(model => model.note, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="col-2 d-flex flex-column">
+                <label>Ngày bắt đầu</label>
+                @Html.EditorFor(model => model.timestart, new { htmlAttributes = new { @class = "form-control", placeholder = "dd-mm-yyyy", @id = "timestart" } })
+                @*@Html.ValidationMessageFor(model => model.timestart, "", new { @class = "text-danger" })*@
+            </div>
+
+            <div class="col-2 d-flex flex-column">
+                <label>Ngày kết thúc</label>
+                @Html.EditorFor(model => model.timeend, new { htmlAttributes = new { @class = "form-control", placeholder = "dd-mm-yyyy", @id = "timeend" } })
+                @*@Html.ValidationMessageFor(model => model.timeend, "", new { @class = "text-danger" })*@
+            </div>
+
+            <table id="tableh" class="cell-border  table table-striped" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>Loại sản phẩm</th>
+                        <th>Điều kiện</th>
+                        <th>Rebate(%)</th>
+                        <th>Note</th>
+                        <th>
+                            <button id='btnaddProduct' type="button" class="btn btn-secondary visible" onclick="AddItem(this)">Add</button>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (int i = 0; i < Model.Products.Count; i++)
+                    {
+                        <tr>
+                            <td>
+                                @Html.EditorFor(x => x.Products[i].productname, new { htmlAtributes = new { @class = "form-control" } })
+                            </td>
+                            <td>
+                                @Html.EditorFor(x => x.Products[i].condition, new { htmlAtributes = new { @class = "form-control" } })
+                            </td>
+                            <td>
+                                @Html.EditorFor(x => x.Products[i].rebate, new { htmlAtributes = new { @class = "form-control", type = "number", min = "0", step = "0.01" } })
+                            </td>
+                            <td>
+                                @Html.EditorFor(x => x.Products[i].note, new { htmlAtributes = new { @class = "form-control" } })
+                            </td>
+                            <td>
+                                <button id='btnremove-@i' type="button" class="btn btn-danger visible" onclick="DeleteItem(this)">Delete</button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <input type="hidden" id="hdnLastIndex" value="0" />
+            <div class="col-12 from-group ">
+                <a href='@Url.Action("Index")' style="width:77px" class="btn btn-secondary">&nbsp;Back&nbsp</a>
+                <input id="submit" type="submit" style="width:77px" value="Create" class="btn btn-primary">
+            </div>
+        </div>
+
+    }
+</div>
+<script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+<script src="https://kit.fontawesome.com/60bf89e922.js" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.10.0/js/bootstrap-select.min.js"></script>
+<script type="text/javascript">
+
+    $(".custom-file-input").on("change", function () {
+        var fileName = $(this).val().split("\\").pop();
+        $(this).sibling(".custom-file-label").addClass("selected").html(fileName);
+    });
+
+    function DeleteItem(btn) {
+        var table = document.getElementById('tableh');
+        var rows = table.getElementsByTagName('tr');
+        if (rows.length == 2) {
+            alert("Không thể xóa dòng lày");
+            return;
+        }
+        $(btn).closest('tr').remove();
+    }
+
+    function AddItem(btn) {
+        var table = document.getElementById('tableh');
+        var rows = table.getElementsByTagName('tr');
+        var rowOuterHtml = rows[rows.length - 1].outerHTML;
+        var lastrowIdx = rows.length - 2;
+        var nextrowIdx = eval(lastrowIdx) + 1;
+        rowOuterHtml = rowOuterHtml.replaceAll('_' + lastrowIdx + '_', '_' + nextrowIdx + '_');
+        rowOuterHtml = rowOuterHtml.replaceAll('[' + lastrowIdx + ']', '[' + nextrowIdx + ']');
+        rowOuterHtml = rowOuterHtml.replaceAll('-' + lastrowIdx, '-' + nextrowIdx);
+        var newRow = table.insertRow();
+        newRow.innerHTML = rowOuterHtml;
+    }
+
+    $('#submit').click(function () {
+        if ($('#brandname').val() == '') {
+            $.alert({
+                theme: 'bootstrap',
+                title: 'ERROR🚫',
+                backgroundDismiss: true,
+                content: 'Hãng is missing 🤡',
+                buttons: {
+                    Roger: function () {
+                    },
+                    Close: function () {
+                    }
+                }
+            });
+            return false;
+        }
+        else if ($('#program').val() == '') {
+            $.alert({
+                theme: 'bootstrap',
+                title: 'ERROR🚫',
+                backgroundDismiss: true,
+                content: 'Tên chương trình is missing 🤡',
+                buttons: {
+                    Roger: function () {
+                    },
+                    Close: function () {
+                    }
+                }
+            });
+            return false;
+        }
+        else if ($('#currency').val() == '') {
+            $.alert({
+                theme: 'bootstrap',
+                title: 'ERROR🚫',
+                backgroundDismiss: true,
+                content: 'Đơn vị tiền tệ is missing 🤡',
+                buttons: {
+                    Roger: function () {
+                    },
+                    Close: function () {
+                    }
+                }
+            });
+            return false;
+        }
+        else if ($('#timestart').val() == '') {
+            $.alert({
+                theme: 'bootstrap',
+                title: 'ERROR🚫',
+                backgroundDismiss: true,
+                content: 'Thời gian bắt đầu is missing 🤡',
+                buttons: {
+                    Roger: function () {
+                    },
+                    Close: function () {
+                    }
+                }
+            });
+            return false;
+        }
+        else if ($('#timeend').val() == '') {
+            $.alert({
+                theme: 'bootstrap',
+                title: 'ERROR🚫',
+                backgroundDismiss: true,
+                content: 'Thời gian kết thúc is missing 🤡',
+                buttons: {
+                    Roger: function () {
+                    },
+                    Close: function () {
+                    }
+                }
+            });
+            return false;
+        }
+        else if ($('#Products_0__productname').val() == '') {
+            $.alert({
+                theme: 'bootstrap',
+                title: 'ERROR🚫',
+                backgroundDismiss: true,
+                content: 'Loại sản phẩm is missing 🤡',
+                buttons: {
+                    Roger: function () {
+                    },
+                    Close: function () {
+                    }
+                }
+            });
+            return false;
+        }
+        else if ($('#Products_0__condition').val() == '') {
+            $.alert({
+                theme: 'bootstrap',
+                title: 'ERROR🚫',
+                backgroundDismiss: true,
+                content: 'Điều kiện is missing 🤡',
+                buttons: {
+                    Roger: function () {
+                    },
+                    Close: function () {
+                    }
+                }
+            });
+            return false;
+        }
+        else if ($('#Products_0__rebate').val() == '') {
+            $.alert({
+                theme: 'bootstrap',
+                title: 'ERROR🚫',
+                backgroundDismiss: true,
+                content: 'Rebate is missing 🤡',
+                buttons: {
+                    Roger: function () {
+                    },
+                    Close: function () {
+                    }
+                }
+            });
+            return false;
+        }
+       
+    });
+    $(document).ready(function () {
+        $('.selectpicker').selectpicker({
+            liveSearch: true,
+            showSubtext: true
+        });
+    });                                                                 
+       
+</script>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

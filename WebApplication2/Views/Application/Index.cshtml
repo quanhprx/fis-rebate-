@@ -1,0 +1,96 @@
+﻿@model IEnumerable<WebApplication2.Models.Brand>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css">
+<link rel="stylesheet" href="~/assets/css/function1.css">
+
+<div class="content ps-0 " style="height:100vh;flex:1;">
+    <div id="Frame180" class="row align-items-center d-flex justify-content-around " style="box-sizing: border-box; border:7px solid#F5F5F5;border-left: 0;">
+        <a class="col-2">
+            <input type="button" value="Tạo mới chương trình" class="btn btn-success col-2" style="width:170px;height:40px;" onclick="location.href='@Url.Action("Create", "Application")';return true;">
+        </a>
+        <div class="col-8">
+            <div class="btn d-flex  align-items-center justify-content-center align-self-center float-end" style="color: #096DD9;width: 270px;">Tìm kiếm:______________________ <i class="fa-solid fa-magnifying-glass"></i></div>
+        </div>
+    </div>
+    <div id="Search" class="row d-flex justify-content-around " style="box-sizing: border-box; border:5px solid#F5F5F5">
+        <div class="col-2 d-flex flex-column">
+            <label>Hãng</label>
+            <input type="text" class="rounded">
+        </div>
+        <div class="col-2 d-flex flex-column">
+            <label>Tên chương trình</label>
+            <input type="text" class="rounded">
+        </div>
+        <div class="col-2 d-flex flex-column">
+            <label>Ngày bắt đầu</label>
+            <input type="text" class="rounded">
+        </div>
+        <div class="col-2 d-flex flex-column">
+            <label>Ngày kết thúc</label>
+            <input type="text" class="rounded">
+        </div>
+        <a class="col-2  d-flex align-items-center">
+            <div class="btn btn-success col-2 d-flexd align-items-center justify-content-center align-self-center" id="sbtn" style="border-radius: 55%;width: 160px;height: 40px;">Tìm kiếm <i class="fa-solid fa-magnifying-glass"></i></div>
+        </a>
+    </div>
+    <table id="tableh" class=" table cell-border hover" style="width:100%">
+        <thead>
+            <tr>
+                <th>Hãng</th>
+                <th>Chương trình</th>
+                <th>Đơn vị tiền tệ</th>
+                <th>Ghi chú</th>
+                <th>Ngày bắt đầu</th>
+                <th>Ngày kết thúc</th>
+                <th>Thao tác</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.brandname)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.program)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.currency)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.note)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.timestart)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.timeend)
+                    </td>
+                    <td>
+                        <div class="d-flex justify-content-between align-item-center">
+                            <a href='@Url.Action("Edit",new { id = item.Id })' class="fa-solid fa-pen text-warning btn"></a>
+                            <a href='@Url.Action("Details",new { id = item.Id })' class="fa-solid fa-eye text-primary btn"></a>
+                            <a href='@Url.Action("Delete",new { id = item.Id})' class="fa-solid fa-trash-can text-danger btn"></a>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+<script src="https://kit.fontawesome.com/60bf89e922.js" crossorigin="anonymous"></script>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
+<script src="~/assets/js/nor.js"></script>
+<script src="~/assets/js/site.js"></script>

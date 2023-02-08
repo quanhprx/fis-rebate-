@@ -1,0 +1,11 @@
+﻿.sidebar .navbar .nav-link:hover {
+    display: block;
+    background: #EFDBFF;
+    border-radius: 15px;
+}
+
+.navbar-nav .nav-link {
+    padding-right: 0;
+    padding-left: 10px;
+    width: 80%;
+}
